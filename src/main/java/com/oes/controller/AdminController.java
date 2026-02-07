@@ -24,6 +24,8 @@ public class AdminController extends HttpServlet {
             addExam(request, response);
         } else if ("addQuestion".equals(action)) {
             addQuestion(request, response);
+        } else if ("updateExam".equals(action)) {
+            updateExam(request, response);
         }
     }
 
@@ -39,14 +41,44 @@ public class AdminController extends HttpServlet {
         String name = request.getParameter("examName");
         int duration = Integer.parseInt(request.getParameter("duration"));
         int totalMarks = Integer.parseInt(request.getParameter("totalMarks"));
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+
+        if (startTime != null) startTime = startTime.replace("T", " ");
+        if (endTime != null) endTime = endTime.replace("T", " ");
 
         Exam exam = new Exam();
         exam.setName(name);
         exam.setDuration(duration);
         exam.setTotalMarks(totalMarks);
+        exam.setStartTime(startTime);
+        exam.setEndTime(endTime);
 
         examDao.addExam(exam);
         response.sendRedirect("admin_dashboard.jsp?msg=Exam Added");
+    }
+
+    private void updateExam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("examId"));
+        String name = request.getParameter("examName");
+        int duration = Integer.parseInt(request.getParameter("duration"));
+        int totalMarks = Integer.parseInt(request.getParameter("totalMarks"));
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+
+        if (startTime != null) startTime = startTime.replace("T", " ");
+        if (endTime != null) endTime = endTime.replace("T", " ");
+
+        Exam exam = new Exam();
+        exam.setId(id);
+        exam.setName(name);
+        exam.setDuration(duration);
+        exam.setTotalMarks(totalMarks);
+        exam.setStartTime(startTime);
+        exam.setEndTime(endTime);
+
+        examDao.updateExam(exam);
+        response.sendRedirect("admin_exams.jsp?msg=Exam Updated");
     }
 
     private void deleteExam(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -66,4 +66,19 @@ public class QuestionDao {
         }
         return false;
     }
+
+    public int getQuestionCount() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM questions";
+        try (Connection con = DbConnection.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

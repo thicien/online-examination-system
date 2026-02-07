@@ -8,15 +8,16 @@ import java.util.List;
 
 public class ExamDao {
 
+    // Add Exam
     public boolean addExam(Exam exam) {
-        String query = "INSERT INTO exams (exam_name, duration, total_marks) VALUES (?, ?, ?)";
+        String query = "INSERT INTO exams (exam_name, duration, total_marks, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = DbConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
-            
             ps.setString(1, exam.getName());
             ps.setInt(2, exam.getDuration());
             ps.setInt(3, exam.getTotalMarks());
-            
+            ps.setString(4, exam.getStartTime());
+            ps.setString(5, exam.getEndTime());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -24,9 +25,28 @@ public class ExamDao {
         return false;
     }
 
+    // Update Exam
+    public boolean updateExam(Exam exam) {
+        String query = "UPDATE exams SET exam_name=?, duration=?, total_marks=?, start_time=?, end_time=? WHERE exam_id=?";
+        try (Connection con = DbConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, exam.getName());
+            ps.setInt(2, exam.getDuration());
+            ps.setInt(3, exam.getTotalMarks());
+            ps.setString(4, exam.getStartTime());
+            ps.setString(5, exam.getEndTime());
+            ps.setInt(6, exam.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Get All Exams
     public List<Exam> getAllExams() {
         List<Exam> list = new ArrayList<>();
-        String query = "SELECT * FROM exams ORDER BY exam_id DESC";
+        String query = "SELECT * FROM exams";
         try (Connection con = DbConnection.getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(query)) {
@@ -37,6 +57,13 @@ public class ExamDao {
                 exam.setName(rs.getString("exam_name"));
                 exam.setDuration(rs.getInt("duration"));
                 exam.setTotalMarks(rs.getInt("total_marks"));
+                
+                // Retrieve timestamps as Strings for simplicity, handling nulls
+                Timestamp startTs = rs.getTimestamp("start_time");
+                Timestamp endTs = rs.getTimestamp("end_time");
+                if (startTs != null) exam.setStartTime(startTs.toString().substring(0, 16).replace(" ", "T")); // Format for datetime-local
+                if (endTs != null) exam.setEndTime(endTs.toString().substring(0, 16).replace(" ", "T"));
+
                 list.add(exam);
             }
         } catch (SQLException e) {
@@ -59,6 +86,11 @@ public class ExamDao {
                 exam.setName(rs.getString("exam_name"));
                 exam.setDuration(rs.getInt("duration"));
                 exam.setTotalMarks(rs.getInt("total_marks"));
+                
+                Timestamp startTs = rs.getTimestamp("start_time");
+                Timestamp endTs = rs.getTimestamp("end_time");
+                if (startTs != null) exam.setStartTime(startTs.toString().substring(0, 16).replace(" ", "T")); // Format for datetime-local
+                if (endTs != null) exam.setEndTime(endTs.toString().substring(0, 16).replace(" ", "T"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,6 +104,37 @@ public class ExamDao {
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int getExamCount() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM exams";
+        try (Connection con = DbConnection.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public boolean isExamAttempted(int userId, int examId) {
+        String query = "SELECT COUNT(*) FROM results WHERE user_id=? AND exam_id=?";
+        try (Connection con = DbConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, examId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

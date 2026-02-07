@@ -25,6 +25,8 @@ public class AuthServlet extends HttpServlet {
             login(request, response);
         } else if ("register".equals(action)) {
             register(request, response);
+        } else if ("updatePassword".equals(action)) {
+            updatePassword(request, response);
         }
     }
 
@@ -80,6 +82,24 @@ public class AuthServlet extends HttpServlet {
             response.sendRedirect("index.jsp?msg=Registration Successful");
         } else {
             response.sendRedirect("register.jsp?error=Registration Failed");
+        }
+    }
+
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        User user = (session != null) ? (User) session.getAttribute("user") : null;
+        
+        if (user == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
+        String newPassword = request.getParameter("newPassword");
+        if (userDao.updatePassword(user.getId(), newPassword)) {
+            user.setPassword(newPassword); // Update session object
+            response.sendRedirect("student_profile.jsp?msg=Password Updated Successfully");
+        } else {
+            response.sendRedirect("student_profile.jsp?error=Failed to Update Password");
         }
     }
 }

@@ -1,0 +1,63 @@
+
+D:\online-examination-system>set "TOMCAT_HOME=C:\apache-tomcat-11.0.15-windows-x64\apache-tomcat-11.0.15" 
+
+D:\online-examination-system>set "PROJECT_DIR=d:\online-examination-system" 
+
+D:\online-examination-system>set "SRC_DIR=d:\online-examination-system\src\main\java" 
+
+D:\online-examination-system>set "WEB_INF=d:\online-examination-system\src\main\webapp\WEB-INF" 
+
+D:\online-examination-system>set "CLASSES_DIR=d:\online-examination-system\src\main\webapp\WEB-INF\classes" 
+
+D:\online-examination-system>set "LIB_DIR=d:\online-examination-system\src\main\webapp\WEB-INF\lib" 
+
+D:\online-examination-system>echo [1/4] Setting up environment... 
+[1/4] Setting up environment...
+
+D:\online-examination-system>cd /d "d:\online-examination-system" 
+
+d:\online-examination-system>echo [2/4] Cleaning old classes... 
+[2/4] Cleaning old classes...
+
+d:\online-examination-system>if exist "d:\online-examination-system\src\main\webapp\WEB-INF\classes" (
+echo Deleting d:\online-examination-system\src\main\webapp\WEB-INF\classes...  
+ rmdir /S /Q "d:\online-examination-system\src\main\webapp\WEB-INF\classes" 
+) 
+Deleting d:\online-examination-system\src\main\webapp\WEB-INF\classes...
+
+d:\online-examination-system>mkdir "d:\online-examination-system\src\main\webapp\WEB-INF\classes" 
+
+d:\online-examination-system>echo [3/4] Listing source files... 
+[3/4] Listing source files...
+
+d:\online-examination-system>dir /s /b "d:\online-examination-system\src\main\java\*.java"  1>sources.txt 
+
+d:\online-examination-system>echo Source files found: 
+Source files found:
+
+d:\online-examination-system>type sources.txt 
+d:\online-examination-system\src\main\java\com\oes\controller\AdminController.java
+d:\online-examination-system\src\main\java\com\oes\controller\AuthServlet.java
+d:\online-examination-system\src\main\java\com\oes\controller\ExamController.java
+d:\online-examination-system\src\main\java\com\oes\dao\AdminDao.java
+d:\online-examination-system\src\main\java\com\oes\dao\ExamDao.java
+d:\online-examination-system\src\main\java\com\oes\dao\QuestionDao.java
+d:\online-examination-system\src\main\java\com\oes\dao\ResultDao.java
+d:\online-examination-system\src\main\java\com\oes\dao\UserDao.java
+d:\online-examination-system\src\main\java\com\oes\model\Admin.java
+d:\online-examination-system\src\main\java\com\oes\model\Exam.java
+d:\online-examination-system\src\main\java\com\oes\model\Question.java
+d:\online-examination-system\src\main\java\com\oes\model\Result.java
+d:\online-examination-system\src\main\java\com\oes\model\User.java
+d:\online-examination-system\src\main\java\com\oes\util\DbConnection.java
+
+d:\online-examination-system>echo [4/4] Compiling... 
+[4/4] Compiling...
+
+d:\online-examination-system>javac -d "d:\online-examination-system\src\main\webapp\WEB-INF\classes" -cp "C:\apache-tomcat-11.0.15-windows-x64\apache-tomcat-11.0.15\lib\servlet-api.jar;C:\apache-tomcat-11.0.15-windows-x64\apache-tomcat-11.0.15\lib\jsp-api.jar;d:\online-examination-system\src\main\webapp\WEB-INF\lib\*" @sources.txt 
+
+d:\online-examination-system>if 0 EQU 0 (echo Compilation Successful! )  else (
+echo [ERROR] Compilation Failed!  
+ exit /b 1 
+) 
+Compilation Successful!

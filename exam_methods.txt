@@ -1,0 +1,17 @@
+Compiled from "Exam.java"
+public class com.oes.model.Exam {
+  private int id;
+  private java.lang.String name;
+  private int duration;
+  private int totalMarks;
+  public com.oes.model.Exam();
+  public com.oes.model.Exam(int, java.lang.String, int, int);
+  public int getId();
+  public void setId(int);
+  public java.lang.String getName();
+  public void setName(java.lang.String);
+  public int getDuration();
+  public void setDuration(int);
+  public int getTotalMarks();
+  public void setTotalMarks(int);
+}

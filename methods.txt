@@ -1,0 +1,6 @@
+Compiled from "UserDao.java"
+public class com.oes.dao.UserDao {
+  public com.oes.dao.UserDao();
+  public boolean registerUser(com.oes.model.User);
+  public com.oes.model.User loginUser(java.lang.String, java.lang.String);
+}
