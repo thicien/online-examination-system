@@ -5,10 +5,15 @@ d:\online-examination-system\src\main\java\com\oes\dao\AdminDao.java
 d:\online-examination-system\src\main\java\com\oes\dao\ExamDao.java
 d:\online-examination-system\src\main\java\com\oes\dao\QuestionDao.java
 d:\online-examination-system\src\main\java\com\oes\dao\ResultDao.java
+d:\online-examination-system\src\main\java\com\oes\dao\StudentAnswerDao.java
 d:\online-examination-system\src\main\java\com\oes\dao\UserDao.java
 d:\online-examination-system\src\main\java\com\oes\model\Admin.java
 d:\online-examination-system\src\main\java\com\oes\model\Exam.java
 d:\online-examination-system\src\main\java\com\oes\model\Question.java
 d:\online-examination-system\src\main\java\com\oes\model\Result.java
+d:\online-examination-system\src\main\java\com\oes\model\StudentAnswer.java
 d:\online-examination-system\src\main\java\com\oes\model\User.java
 d:\online-examination-system\src\main\java\com\oes\util\DbConnection.java
+d:\online-examination-system\src\main\java\com\oes\util\ManualDbFix.java
+d:\online-examination-system\src\main\java\com\oes\util\UpdateQuestionsSchema.java
+d:\online-examination-system\src\main\java\com\oes\util\UpdateReviewSchema.java

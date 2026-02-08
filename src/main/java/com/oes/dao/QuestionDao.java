@@ -9,7 +9,7 @@ import java.util.List;
 public class QuestionDao {
 
     public boolean addQuestion(Question q) {
-        String query = "INSERT INTO questions (exam_id, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO questions (exam_id, question_text, option_a, option_b, option_c, option_d, correct_option, marks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = DbConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             
@@ -20,6 +20,7 @@ public class QuestionDao {
             ps.setString(5, q.getOptionC());
             ps.setString(6, q.getOptionD());
             ps.setString(7, q.getCorrectOption());
+            ps.setInt(8, q.getMarks());
             
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -47,6 +48,7 @@ public class QuestionDao {
                 q.setOptionC(rs.getString("option_c"));
                 q.setOptionD(rs.getString("option_d"));
                 q.setCorrectOption(rs.getString("correct_option"));
+                q.setMarks(rs.getInt("marks"));
                 list.add(q);
             }
         } catch (SQLException e) {
@@ -80,5 +82,49 @@ public class QuestionDao {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public Question getQuestionById(int id) {
+        Question q = null;
+        String query = "SELECT * FROM questions WHERE question_id=?";
+        try (Connection con = DbConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                q = new Question();
+                q.setId(rs.getInt("question_id"));
+                q.setExamId(rs.getInt("exam_id"));
+                q.setText(rs.getString("question_text"));
+                q.setOptionA(rs.getString("option_a"));
+                q.setOptionB(rs.getString("option_b"));
+                q.setOptionC(rs.getString("option_c"));
+                q.setOptionD(rs.getString("option_d"));
+                q.setCorrectOption(rs.getString("correct_option"));
+                q.setMarks(rs.getInt("marks"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return q;
+    }
+
+    public boolean updateQuestion(Question q) {
+        String query = "UPDATE questions SET question_text=?, option_a=?, option_b=?, option_c=?, option_d=?, correct_option=?, marks=? WHERE question_id=?";
+        try (Connection con = DbConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, q.getText());
+            ps.setString(2, q.getOptionA());
+            ps.setString(3, q.getOptionB());
+            ps.setString(4, q.getOptionC());
+            ps.setString(5, q.getOptionD());
+            ps.setString(6, q.getCorrectOption());
+            ps.setInt(7, q.getMarks());
+            ps.setInt(8, q.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

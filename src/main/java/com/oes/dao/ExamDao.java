@@ -10,7 +10,7 @@ public class ExamDao {
 
     // Add Exam
     public boolean addExam(Exam exam) {
-        String query = "INSERT INTO exams (exam_name, duration, total_marks, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO exams (exam_name, duration, total_marks, start_time, end_time, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = DbConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, exam.getName());
@@ -18,6 +18,7 @@ public class ExamDao {
             ps.setInt(3, exam.getTotalMarks());
             ps.setString(4, exam.getStartTime());
             ps.setString(5, exam.getEndTime());
+            ps.setString(6, exam.getPassword());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -27,7 +28,7 @@ public class ExamDao {
 
     // Update Exam
     public boolean updateExam(Exam exam) {
-        String query = "UPDATE exams SET exam_name=?, duration=?, total_marks=?, start_time=?, end_time=? WHERE exam_id=?";
+        String query = "UPDATE exams SET exam_name=?, duration=?, total_marks=?, start_time=?, end_time=?, password=? WHERE exam_id=?";
         try (Connection con = DbConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, exam.getName());
@@ -35,7 +36,8 @@ public class ExamDao {
             ps.setInt(3, exam.getTotalMarks());
             ps.setString(4, exam.getStartTime());
             ps.setString(5, exam.getEndTime());
-            ps.setInt(6, exam.getId());
+            ps.setString(6, exam.getPassword());
+            ps.setInt(7, exam.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,6 +59,7 @@ public class ExamDao {
                 exam.setName(rs.getString("exam_name"));
                 exam.setDuration(rs.getInt("duration"));
                 exam.setTotalMarks(rs.getInt("total_marks"));
+                exam.setPassword(rs.getString("password"));
                 
                 // Retrieve timestamps as Strings for simplicity, handling nulls
                 Timestamp startTs = rs.getTimestamp("start_time");
@@ -86,6 +89,7 @@ public class ExamDao {
                 exam.setName(rs.getString("exam_name"));
                 exam.setDuration(rs.getInt("duration"));
                 exam.setTotalMarks(rs.getInt("total_marks"));
+                exam.setPassword(rs.getString("password"));
                 
                 Timestamp startTs = rs.getTimestamp("start_time");
                 Timestamp endTs = rs.getTimestamp("end_time");

@@ -19,6 +19,7 @@ public class AdminController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("DEBUG: AdminController doPost action: " + action);
         
         if ("addExam".equals(action)) {
             addExam(request, response);
@@ -26,6 +27,9 @@ public class AdminController extends HttpServlet {
             addQuestion(request, response);
         } else if ("updateExam".equals(action)) {
             updateExam(request, response);
+        } else if ("updateQuestion".equals(action)) {
+            System.out.println("DEBUG: Dispatching to updateQuestion...");
+            updateQuestion(request, response);
         }
     }
 
@@ -43,6 +47,9 @@ public class AdminController extends HttpServlet {
         int totalMarks = Integer.parseInt(request.getParameter("totalMarks"));
         String startTime = request.getParameter("startTime");
         String endTime = request.getParameter("endTime");
+        String password = request.getParameter("password");
+
+        System.out.println("AdminController: Adding Exam - Name: " + name + ", Start: " + startTime + ", End: " + endTime + ", Pass: " + password);
 
         if (startTime != null) startTime = startTime.replace("T", " ");
         if (endTime != null) endTime = endTime.replace("T", " ");
@@ -53,8 +60,10 @@ public class AdminController extends HttpServlet {
         exam.setTotalMarks(totalMarks);
         exam.setStartTime(startTime);
         exam.setEndTime(endTime);
+        exam.setPassword(password);
 
-        examDao.addExam(exam);
+        boolean success = examDao.addExam(exam);
+        System.out.println("AdminController: Exam Add Result: " + success);
         response.sendRedirect("admin_dashboard.jsp?msg=Exam Added");
     }
 
@@ -65,6 +74,7 @@ public class AdminController extends HttpServlet {
         int totalMarks = Integer.parseInt(request.getParameter("totalMarks"));
         String startTime = request.getParameter("startTime");
         String endTime = request.getParameter("endTime");
+        String password = request.getParameter("password");
 
         if (startTime != null) startTime = startTime.replace("T", " ");
         if (endTime != null) endTime = endTime.replace("T", " ");
@@ -76,6 +86,7 @@ public class AdminController extends HttpServlet {
         exam.setTotalMarks(totalMarks);
         exam.setStartTime(startTime);
         exam.setEndTime(endTime);
+        exam.setPassword(password);
 
         examDao.updateExam(exam);
         response.sendRedirect("admin_exams.jsp?msg=Exam Updated");
@@ -95,6 +106,7 @@ public class AdminController extends HttpServlet {
         String optC = request.getParameter("optionC");
         String optD = request.getParameter("optionD");
         String correct = request.getParameter("correctOption");
+        int marks = Integer.parseInt(request.getParameter("marks"));
 
         Question q = new Question();
         q.setExamId(examId);
@@ -104,8 +116,52 @@ public class AdminController extends HttpServlet {
         q.setOptionC(optC);
         q.setOptionD(optD);
         q.setCorrectOption(correct);
+        q.setMarks(marks);
 
         questionDao.addQuestion(q);
         response.sendRedirect("add_question.jsp?examId=" + examId + "&msg=Question Added");
+    }
+
+    private void updateQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            System.out.println("DEBUG: Inside updateQuestion");
+            int id = Integer.parseInt(request.getParameter("questionId"));
+            int examId = Integer.parseInt(request.getParameter("examId"));
+            String text = request.getParameter("questionText");
+            String optA = request.getParameter("optionA");
+            String optB = request.getParameter("optionB");
+            String optC = request.getParameter("optionC");
+            String optD = request.getParameter("optionD");
+            String correct = request.getParameter("correctOption");
+            int marks = Integer.parseInt(request.getParameter("marks"));
+
+            System.out.println("DEBUG: Updating Question ID: " + id + ", ExamID: " + examId + ", Marks: " + marks);
+
+            Question q = new Question();
+            q.setId(id);
+            q.setExamId(examId);
+            q.setText(text);
+            q.setOptionA(optA);
+            q.setOptionB(optB);
+            q.setOptionC(optC);
+            q.setOptionD(optD);
+            q.setCorrectOption(correct);
+            q.setMarks(marks);
+
+            boolean success = questionDao.updateQuestion(q);
+            System.out.println("DEBUG: Update success: " + success);
+            
+            response.sendRedirect("add_question.jsp?examId=" + examId + "&msg=Question Updated");
+        } catch (Exception e) {
+            System.err.println("ERROR in updateQuestion: " + e.getMessage());
+            e.printStackTrace();
+            // Try to recover examId if possible
+            String examId = request.getParameter("examId");
+            if (examId != null) {
+                 response.sendRedirect("add_question.jsp?examId=" + examId + "&err=UpdateException");
+            } else {
+                 response.sendRedirect("admin_dashboard.jsp?err=UpdateException");
+            }
+        }
     }
 }

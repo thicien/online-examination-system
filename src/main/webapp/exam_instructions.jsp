@@ -53,8 +53,25 @@
                 </ul>
                 
                 <div style="margin-top: 30px; text-align: center;">
-                    <a href="exam?action=take&id=<%= exam.getId() %>" class="action-btn" style="padding: 15px 30px; font-size: 1.1rem;">Start Exam</a>
-                    <br><br>
+                    <% if (request.getAttribute("error") != null) { %>
+                        <p style="color: red; margin-bottom: 10px;"><%= request.getAttribute("error") %></p>
+                    <% } %>
+
+                    <form action="exam" method="post">
+                        <input type="hidden" name="action" value="verifyPasswordAndStart">
+                        <input type="hidden" name="id" value="<%= exam.getId() %>">
+                        
+                        <% if (exam.getPassword() != null && !exam.getPassword().trim().isEmpty()) { %>
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Enter Exam Password:</label>
+                            <input type="text" name="password" required placeholder="Password is on your dashboard" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 250px;">
+                        </div>
+                        <% } %>
+
+                        <button type="submit" class="action-btn" style="padding: 15px 30px; font-size: 1.1rem; border:none; cursor:pointer;">Start Exam</button>
+                    </form>
+                    
+                    <br>
                     <a href="student_exams.jsp" style="color: grey;">Cancel</a>
                 </div>
             </div>

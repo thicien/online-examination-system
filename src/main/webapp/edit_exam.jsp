@@ -60,6 +60,10 @@
                         <label>End Time</label>
                         <input type="datetime-local" name="endTime" value="<%= exam.getEndTime() != null ? exam.getEndTime() : "" %>" required>
                     </div>
+                    <div class="form-group">
+                        <label>Exam Password</label>
+                        <input type="text" name="password" value="<%= exam.getPassword() != null ? exam.getPassword() : "" %>" placeholder="Leave empty for open access">
+                    </div>
                     <button type="submit" class="btn">Update Exam</button>
                     <a href="admin_exams.jsp" class="btn" style="background-color: #6c757d; text-decoration: none; display: inline-block; text-align: center;">Cancel</a>
                 </form>

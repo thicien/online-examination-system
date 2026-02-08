@@ -3,9 +3,11 @@ package com.oes.controller;
 import com.oes.dao.ExamDao;
 import com.oes.dao.QuestionDao;
 import com.oes.dao.ResultDao;
+import com.oes.dao.StudentAnswerDao;
 import com.oes.model.Exam;
 import com.oes.model.Question;
 import com.oes.model.Result;
+import com.oes.model.StudentAnswer;
 import com.oes.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,13 +28,9 @@ public class ExamController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("take".equals(action)) {
-            int examId = Integer.parseInt(request.getParameter("id"));
-            Exam exam = examDao.getExamById(examId);
-            List<Question> questions = questionDao.getQuestionsByExamId(examId);
-            
-            request.setAttribute("exam", exam);
-            request.setAttribute("questions", questions);
-            request.getRequestDispatcher("take_exam.jsp").forward(request, response);
+             // Redirect to instructions to ensure proper flow and password check
+             String idStr = request.getParameter("id");
+             response.sendRedirect("exam_instructions.jsp?examId=" + idStr);
         }
     }
 
@@ -40,7 +38,42 @@ public class ExamController extends HttpServlet {
         String action = request.getParameter("action");
         if ("submit".equals(action)) {
             submitExam(request, response);
+        } else if ("verifyPasswordAndStart".equals(action)) {
+            verifyPasswordAndStart(request, response);
         }
+    }
+
+    private void verifyPasswordAndStart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int examId = Integer.parseInt(request.getParameter("id"));
+        String inputPassword = request.getParameter("password");
+        
+        Exam exam = examDao.getExamById(examId);
+        
+        if (exam == null) {
+            response.sendRedirect("student_exams.jsp");
+            return;
+        }
+
+        // 1. Check Password
+        if (exam.getPassword() != null && !exam.getPassword().trim().isEmpty()) {
+            if (inputPassword == null || !inputPassword.equals(exam.getPassword())) {
+                request.setAttribute("error", "Invalid Exam Password");
+                // Forward back to instructions with error (need to set examId for instructions to load)
+                // Actually instructions.jsp loads exam by param 'examId'.
+                // So we can redirect with error or forward. Forward is better to keep error in request.
+                // But instructions.jsp expects 'examId' param.
+                // Let's redirect for simplicity or modify instructions to read attributes.
+                // Redirection:
+                response.sendRedirect("exam_instructions.jsp?examId=" + examId + "&error=Invalid Password");
+                return;
+            }
+        }
+
+        // 2. Load Questions and Forward to Take Exam
+        List<Question> questions = questionDao.getQuestionsByExamId(examId);
+        request.setAttribute("exam", exam);
+        request.setAttribute("questions", questions);
+        request.getRequestDispatcher("take_exam.jsp").forward(request, response);
     }
 
     private void submitExam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,13 +89,30 @@ public class ExamController extends HttpServlet {
         List<Question> questions = questionDao.getQuestionsByExamId(examId);
         int score = 0;
         int totalQuestions = questions.size();
-        int marksPerQ = totalQuestions > 0 ? (examDao.getExamById(examId).getTotalMarks() / totalQuestions) : 0; // Simple logic
+        
+        StudentAnswerDao studentAnswerDao = new StudentAnswerDao();
 
         for (Question q : questions) {
             String selectedOption = request.getParameter("q_" + q.getId());
+            boolean isCorrect = false;
+            int marksObtained = 0;
+
             if (selectedOption != null && selectedOption.equals(q.getCorrectOption())) {
-                score += marksPerQ;
+                score += q.getMarks();
+                isCorrect = true;
+                marksObtained = q.getMarks();
             }
+
+            // Save Student Answer
+            StudentAnswer answer = new StudentAnswer();
+            answer.setUserId(user.getId());
+            answer.setExamId(examId);
+            answer.setQuestionId(q.getId());
+            answer.setSelectedOption(selectedOption); // Can be null if not answered
+            answer.setCorrect(isCorrect);
+            answer.setMarksObtained(marksObtained);
+            
+            studentAnswerDao.saveAnswer(answer);
         }
 
         Result result = new Result();

@@ -8,6 +8,7 @@ public class Exam {
 
     private String startTime;
     private String endTime;
+    private String password;
 
     public Exam() {}
 
@@ -32,4 +33,6 @@ public class Exam {
     public void setStartTime(String startTime) { this.startTime = startTime; }
     public String getEndTime() { return endTime; }
     public void setEndTime(String endTime) { this.endTime = endTime; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }

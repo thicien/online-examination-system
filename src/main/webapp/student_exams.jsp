@@ -46,6 +46,7 @@
                             <th>Total Marks</th>
                             <th>Start Time</th>
                             <th>End Time</th>
+                            <th>Password</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -67,6 +68,23 @@
                             <td><%= (start != null) ? start.format(formatter).replace("T", " ") : "Anytime" %></td>
                             <td><%= (end != null) ? end.format(formatter).replace("T", " ") : "Anytime" %></td>
                             <td>
+                                <% 
+                                    if (e.getPassword() == null || e.getPassword().trim().isEmpty()) { 
+                                %>
+                                    <span style="color: #888;">Open</span>
+                                <% 
+                                    } else if (isBefore) {
+                                %>
+                                    <span style="color: var(--danger-color); font-weight:bold;">Locked</span>
+                                <% 
+                                    } else {
+                                %>
+                                    <span style="font-family: monospace; background: #eee; padding: 2px 5px; border-radius: 3px;"><%= e.getPassword() %></span>
+                                <% 
+                                    } 
+                                %>
+                            </td>
+                            <td>
                                 <% if (isAttempted) { %>
                                     <button class="btn-sm" style="background-color: var(--secondary-color); cursor: not-allowed;" disabled>Attempted</button>
                                 <% } else if (isBefore) { %>
@@ -81,7 +99,7 @@
                         <% } %>
                          <% if(exams.isEmpty()) { %>
                         <tr>
-                            <td colspan="6" style="text-align:center;">No exams enabled by admin.</td>
+                            <td colspan="7" style="text-align:center;">No exams enabled by admin.</td>
                         </tr>
                         <% } %>
                     </tbody>

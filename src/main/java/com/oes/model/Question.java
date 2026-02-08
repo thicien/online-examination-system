@@ -9,6 +9,7 @@ public class Question {
     private String optionC;
     private String optionD;
     private String correctOption; // 'A', 'B', 'C', 'D'
+    private int marks;
 
     public Question() {}
 
@@ -39,4 +40,6 @@ public class Question {
     public void setOptionD(String optionD) { this.optionD = optionD; }
     public String getCorrectOption() { return correctOption; }
     public void setCorrectOption(String correctOption) { this.correctOption = correctOption; }
+    public int getMarks() { return marks; }
+    public void setMarks(int marks) { this.marks = marks; }
 }

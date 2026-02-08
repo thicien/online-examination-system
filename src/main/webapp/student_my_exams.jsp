@@ -43,6 +43,7 @@
                             <th>Score</th>
                             <th>Percentage</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,12 +59,10 @@
                             <td><%= r.getExamDate() %></td>
                             <td><%= r.getScore() %> / <%= totalMarks %></td>
                             <td><%= String.format("%.2f", percentage) %>%</td>
+                                    <span class="<%= isPass ? "status-pass" : "status-fail" %>"><%= isPass ? "Passed" : "Failed" %></span>
+                            </td>
                             <td>
-                                <% if(isPass) { %>
-                                    <span class="status-pass">Passed</span>
-                                <% } else { %>
-                                    <span class="status-fail">Failed</span>
-                                <% } %>
+                                <a href="review_exam.jsp?examId=<%= r.getExamId() %>" class="btn-sm btn-view" style="text-decoration:none;">Review</a>
                             </td>
                         </tr>
                         <% } %>

@@ -93,6 +93,7 @@
                             <th>Score</th>
                             <th>Date</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,6 +118,7 @@
                             <td><%= r.getScore() %></td>
                             <td><%= r.getExamDate() %></td>
                             <td><span class="status-pass">Completed</span></td>
+                            <td><a href="review_exam.jsp?examId=<%= r.getExamId() %>" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Review</a></td>
                         </tr>
                         <% } %>
                         <% if(recentResults.isEmpty()) { %>
