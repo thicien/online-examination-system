@@ -51,6 +51,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             border-left: 5px solid #ddd;
         }
+        /* ... existing styles ... */
         .question-card.correct { border-left-color: #2ecc71; }
         .question-card.wrong { border-left-color: #e74c3c; }
         .question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; }
@@ -74,17 +75,42 @@
         .badge-success { background-color: #2ecc71; }
         .badge-danger { background-color: #e74c3c; }
         .badge-neutral { background-color: #95a5a6; }
+
+        /* Layout overrides for Focus Mode */
+        body {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .main-content {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .content-area {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
     </style>
 </head>
 <body>
-    <%@ include file="student_sidebar.jsp" %>
+    <!-- Sidebar Removed for Focus Mode -->
+    
     <div class="main-content">
         <%@ include file="student_header.jsp" %>
         <div class="content-area">
+            <!-- Top Actions -->
+            <div style="margin-bottom: 20px;">
+                <a href="student_dashboard.jsp" class="btn-sm btn-view" style="display: inline-block; text-decoration: none; font-weight: bold;">&larr; Back to Dashboard</a>
+            </div>
+
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 class="page-title">Review: <%= exam.getName() %></h2>
                 <div style="font-size: 1.2rem; font-weight: bold;">
-                    Score: <%= totalScore %> / <%= exam.getTotalMarks() %>
+                    Total Score: <%= totalScore %> / <%= exam.getTotalMarks() %>
                 </div>
             </div>
 
@@ -106,7 +132,7 @@
                     <div class="question-text"><%= q.getText() %></div>
                     <div>
                         <% if(isCorrect) { %>
-                            <span class="badge badge-success">+<%= q.getMarks() %> Marks</span>
+                            <span class="badge badge-success"><%= q.getMarks() %> / <%= q.getMarks() %></span>
                         <% } else { %>
                              <span class="badge badge-danger">0 / <%= q.getMarks() %></span>
                         <% } %>
@@ -133,20 +159,23 @@
                     %>
                     <div class="<%= itemClass %>">
                         <strong><%= optLabel %>:</strong> <%= optText %>
-                        <% if(isThisSelected) { %> (Your Answer) <% } %>
-                        <% if(isThisCorrect) { %> (Correct) <% } %>
+                        <% if(isThisSelected) { %> 
+                            <span style="font-weight: bold; margin-left: 5px;">(Your Answer)</span> 
+                        <% } %>
+                        <% if(isThisCorrect) { %> 
+                            <span style="font-weight: bold; margin-left: 5px;">(Correct Answer)</span> 
+                        <% } %>
                     </div>
                     <% } %>
                 </div>
             </div>
             <% } %>
-
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="student_dashboard.jsp" class="btn-sm btn-view">Back to Dashboard</a>
-            </div>
-            </div>
+        </div> <!-- Close content-area -->
+        
+        <!-- Breakout Footer Wrapper -->
+        <div style="width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
+            <%@ include file="footer.jsp" %>
         </div>
-        <%@ include file="footer.jsp" %>
     </div>
 </body>
 </html>

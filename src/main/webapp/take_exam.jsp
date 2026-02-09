@@ -84,6 +84,24 @@
         input[type="radio"] {
             margin-right: 10px;
         }
+        /* Layout overrides */
+        body {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .main-content {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .main-footer {
+            width: 100% !important;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+        }
     </style>
     <script>
         var currentQuestion = 1;
@@ -159,7 +177,7 @@
 </head>
 <body>
     
-    <div class="main-content" style="margin-left: 0; width: 100%; padding-top: 0;"> <!-- No sidebar for exam focus -->
+    <div class="main-content"> <!-- No sidebar for exam focus -->
         
         <!-- Simplified Header -->
         <div class="top-navbar" style="position: sticky; top: 0; z-index: 1000;">
@@ -213,7 +231,12 @@
             </form>
 
         </div>
-        <%@ include file="footer.jsp" %>
+        </div>
+        
+        <!-- Breakout Footer Wrapper -->
+        <div style="width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
+            <%@ include file="footer.jsp" %>
+        </div>
     </div>
 </body>
 </html>

@@ -51,7 +51,7 @@
                             <td><%= e.getTotalMarks() %></td>
                             <td>
                                 <a href="add_question.jsp?examId=<%= e.getId() %>" class="btn-sm btn-view">Add Questions</a>
-                                <!-- Edit would go here -->
+                                <a href="edit_exam.jsp?id=<%= e.getId() %>" class="btn-sm btn-edit">Edit</a>
                                 <a href="admin?action=deleteExam&id=<%= e.getId() %>" class="btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this exam? This action cannot be undone.')">Delete</a>
                             </td>
                         </tr>

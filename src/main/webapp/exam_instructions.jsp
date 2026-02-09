@@ -20,13 +20,33 @@
 <head>
     <title>Exam Instructions - OES</title>
     <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <style>
+        body {
+            display: block !important; /* Override admin.css flex layout */
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .main-content {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .main-footer {
+            width: 100% !important;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar Removed for Focus Mode -->
     
     <!-- Main Content -->
-    <div class="main-content" style="margin-left: 0; width: 100%;">
+    <!-- Main Content -->
+    <div class="main-content">
         <!-- Top Navbar -->
         <%@ include file="student_header.jsp" %>
 
@@ -74,7 +94,12 @@
                     <a href="student_exams.jsp" style="color: grey;">Cancel</a>
             </div> <!-- Close card -->
         </div> <!-- Close content-area -->
-        <%@ include file="footer.jsp" %>
+        </div> <!-- Close content-area -->
+        
+        <!-- Breakout Footer Wrapper -->
+        <div style="width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
+            <%@ include file="footer.jsp" %>
+        </div>
     </div> <!-- Close main-content -->
 </body>
 </html>

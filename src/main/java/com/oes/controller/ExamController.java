@@ -97,7 +97,15 @@ public class ExamController extends HttpServlet {
             boolean isCorrect = false;
             int marksObtained = 0;
 
-            if (selectedOption != null && selectedOption.equals(q.getCorrectOption())) {
+            String correctOpt = q.getCorrectOption();
+            if (correctOpt != null) correctOpt = correctOpt.trim();
+            
+            if (selectedOption != null) selectedOption = selectedOption.trim();
+
+            // Debug logging
+            System.out.println("Q" + q.getId() + ": Selected='" + selectedOption + "', Correct='" + correctOpt + "', Marks=" + q.getMarks());
+
+            if (selectedOption != null && correctOpt != null && selectedOption.equalsIgnoreCase(correctOpt)) {
                 score += q.getMarks();
                 isCorrect = true;
                 marksObtained = q.getMarks();
