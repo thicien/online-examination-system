@@ -65,7 +65,9 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        response.sendRedirect("index.jsp?error=Invalid Credentials");
+
+
+        response.sendRedirect("login.jsp?error=Invalid Credentials");
     }
 
     private void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -79,7 +81,7 @@ public class AuthServlet extends HttpServlet {
         user.setPassword(password);
 
         if (userDao.registerUser(user)) {
-            response.sendRedirect("index.jsp?msg=Registration Successful");
+            response.sendRedirect("login.jsp?msg=Registration Successful");
         } else {
             response.sendRedirect("register.jsp?error=Registration Failed");
         }
@@ -90,7 +92,7 @@ public class AuthServlet extends HttpServlet {
         User user = (session != null) ? (User) session.getAttribute("user") : null;
         
         if (user == null) {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
 

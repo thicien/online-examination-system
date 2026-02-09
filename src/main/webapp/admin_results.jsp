@@ -50,8 +50,9 @@
                         <% } %>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Close table-container -->
+        </div> <!-- Close content-area -->
+        <%@ include file="footer.jsp" %>
+    </div> <!-- Close main-content -->
 </body>
 </html>

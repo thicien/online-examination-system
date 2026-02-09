@@ -79,8 +79,9 @@
                         <button type="submit" class="action-btn" style="border: none; cursor: pointer;">Update Question</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Close form card -->
+        </div> <!-- Close content-area -->
+        <%@ include file="footer.jsp" %>
+    </div> <!-- Close main-content -->
 </body>
 </html>

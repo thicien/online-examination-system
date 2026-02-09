@@ -49,8 +49,9 @@
                     </div>
                     <button type="submit" class="action-btn">Update Password</button>
                 </form>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Close card -->
+        </div> <!-- Close content-area -->
+        <%@ include file="footer.jsp" %>
+    </div> <!-- Close main-content -->
 </body>
 </html>

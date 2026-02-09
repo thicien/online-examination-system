@@ -159,19 +159,20 @@
 </head>
 <body>
     
-    <!-- Simplified Header -->
-    <div class="top-navbar" style="position: sticky; top: 0; z-index: 1000;">
-        <div class="page-name">
-            <h3><%= exam.getName() %></h3>
+    <div class="main-content" style="margin-left: 0; width: 100%; padding-top: 0;"> <!-- No sidebar for exam focus -->
+        
+        <!-- Simplified Header -->
+        <div class="top-navbar" style="position: sticky; top: 0; z-index: 1000;">
+            <div class="page-name">
+                <h3><%= exam.getName() %></h3>
+            </div>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div id="progress-text" style="font-weight: bold;">Question 1 of <%= questions.size() %></div>
+                <div id="timer" style="font-weight: bold; font-size: 1.2rem; color: var(--primary-color);">Loading...</div>
+            </div>
         </div>
-        <div style="display: flex; gap: 20px; align-items: center;">
-            <div id="progress-text" style="font-weight: bold;">Question 1 of <%= questions.size() %></div>
-            <div id="timer" style="font-weight: bold; font-size: 1.2rem; color: var(--primary-color);">Loading...</div>
-        </div>
-    </div>
 
-    <div class="main-content" style="margin-left: 0; padding-top: 20px;"> <!-- No sidebar for exam focus -->
-        <div class="content-area" style="max-width: 800px; margin: 0 auto;">
+        <div class="content-area" style="max-width: 800px; margin: 0 auto; padding-top: 20px;">
             
             <form id="examForm" action="exam" method="post">
                 <input type="hidden" name="action" value="submit">
@@ -212,6 +213,7 @@
             </form>
 
         </div>
+        <%@ include file="footer.jsp" %>
     </div>
 </body>
 </html>

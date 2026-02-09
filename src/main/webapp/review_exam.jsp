@@ -144,7 +144,9 @@
             <div style="text-align: center; margin-top: 20px;">
                 <a href="student_dashboard.jsp" class="btn-sm btn-view">Back to Dashboard</a>
             </div>
+            </div>
         </div>
+        <%@ include file="footer.jsp" %>
     </div>
 </body>
 </html>

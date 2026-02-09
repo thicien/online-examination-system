@@ -60,8 +60,9 @@
                         <a href="admin_exams.jsp" style="color: var(--secondary-color); text-decoration: none;">Cancel</a>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Close form card -->
+        </div> <!-- Close content-area -->
+        <%@ include file="footer.jsp" %>
+    </div> <!-- Close main-content -->
 </body>
 </html>

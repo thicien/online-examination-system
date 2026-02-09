@@ -23,9 +23,13 @@
                 <%= request.getAttribute("score") %> / <%= request.getAttribute("total") %>
             </div>
             
+            </div>
+            
             <br>
             <a href="student_dashboard.jsp" class="button" style="background: #007BFF; color: white; padding: 10px 20px; border-radius: 5px;">Back to Dashboard</a>
         </div>
     </div>
+
+    <%@ include file="footer.jsp" %>
 </body>
 </html>

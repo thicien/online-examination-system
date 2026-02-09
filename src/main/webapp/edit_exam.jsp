@@ -67,8 +67,9 @@
                     <button type="submit" class="btn">Update Exam</button>
                     <a href="admin_exams.jsp" class="btn" style="background-color: #6c757d; text-decoration: none; display: inline-block; text-align: center;">Cancel</a>
                 </form>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Close form card -->
+        </div> <!-- Close content-area -->
+        <%@ include file="footer.jsp" %>
+    </div> <!-- Close main-content -->
 </body>
 </html>

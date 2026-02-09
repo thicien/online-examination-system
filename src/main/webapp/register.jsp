@@ -34,6 +34,11 @@
             
             <button type="submit">Register</button>
         </form>
+        <div style="text-align: center; margin-top: 15px;">
+            <p>Already have an account? <a href="login.jsp">Login here</a></p>
+        </div>
     </div>
+    
+    <%@ include file="footer.jsp" %>
 </body>
 </html>

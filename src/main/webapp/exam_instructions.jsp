@@ -23,11 +23,10 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <%@ include file="student_sidebar.jsp" %>
-
+    <!-- Sidebar Removed for Focus Mode -->
+    
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" style="margin-left: 0; width: 100%;">
         <!-- Top Navbar -->
         <%@ include file="student_header.jsp" %>
 
@@ -73,9 +72,9 @@
                     
                     <br>
                     <a href="student_exams.jsp" style="color: grey;">Cancel</a>
-                </div>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Close card -->
+        </div> <!-- Close content-area -->
+        <%@ include file="footer.jsp" %>
+    </div> <!-- Close main-content -->
 </body>
 </html>
