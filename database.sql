@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS exams (
     exam_id INT AUTO_INCREMENT PRIMARY KEY,
     exam_name VARCHAR(100) NOT NULL,
     duration INT NOT NULL, -- in minutes
-    total_marks INT NOT NULL
+    total_marks INT NOT NULL,
+    is_active BOOLEAN DEFAULT FALSE
 );
 
 -- 4. Question Table

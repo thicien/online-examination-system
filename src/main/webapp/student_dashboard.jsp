@@ -20,7 +20,7 @@
     int failed = resultDao.countFailedExams(user.getId(), 50);
     
     // Calculate Available Exams Count
-    List<Exam> allExams = examDao.getAllExams();
+    List<Exam> allExams = examDao.getAllActiveExams();
     int availableCount = 0;
     for(Exam e : allExams) {
         if(!examDao.isExamAttempted(user.getId(), e.getId())) {

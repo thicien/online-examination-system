@@ -10,7 +10,7 @@ public class ExamDao {
 
     // Add Exam
     public boolean addExam(Exam exam) {
-        String query = "INSERT INTO exams (exam_name, duration, total_marks, start_time, end_time, password) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO exams (exam_name, duration, total_marks, start_time, end_time, password, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = DbConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, exam.getName());
@@ -19,6 +19,7 @@ public class ExamDao {
             ps.setString(4, exam.getStartTime());
             ps.setString(5, exam.getEndTime());
             ps.setString(6, exam.getPassword());
+            ps.setBoolean(7, exam.isActive()); // Default false typically, but let's respect object state
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,6 +61,7 @@ public class ExamDao {
                 exam.setDuration(rs.getInt("duration"));
                 exam.setTotalMarks(rs.getInt("total_marks"));
                 exam.setPassword(rs.getString("password"));
+                exam.setActive(rs.getBoolean("is_active"));
                 
                 // Retrieve timestamps as Strings for simplicity, handling nulls
                 Timestamp startTs = rs.getTimestamp("start_time");
@@ -90,6 +92,7 @@ public class ExamDao {
                 exam.setDuration(rs.getInt("duration"));
                 exam.setTotalMarks(rs.getInt("total_marks"));
                 exam.setPassword(rs.getString("password"));
+                exam.setActive(rs.getBoolean("is_active"));
                 
                 Timestamp startTs = rs.getTimestamp("start_time");
                 Timestamp endTs = rs.getTimestamp("end_time");
@@ -143,5 +146,59 @@ public class ExamDao {
             e.printStackTrace();
         }
         return false;
+    }
+
+    // New methods for Activation/Deactivation
+    public boolean activateExam(int id) {
+        String query = "UPDATE exams SET is_active=TRUE WHERE exam_id=?";
+        try (Connection con = DbConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deactivateExam(int id) {
+        String query = "UPDATE exams SET is_active=FALSE WHERE exam_id=?";
+        try (Connection con = DbConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Exam> getAllActiveExams() {
+        List<Exam> list = new ArrayList<>();
+        String query = "SELECT * FROM exams WHERE is_active=TRUE";
+        try (Connection con = DbConnection.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            
+            while (rs.next()) {
+                Exam exam = new Exam();
+                exam.setId(rs.getInt("exam_id"));
+                exam.setName(rs.getString("exam_name"));
+                exam.setDuration(rs.getInt("duration"));
+                exam.setTotalMarks(rs.getInt("total_marks"));
+                exam.setPassword(rs.getString("password"));
+                exam.setActive(rs.getBoolean("is_active"));
+                
+                Timestamp startTs = rs.getTimestamp("start_time");
+                Timestamp endTs = rs.getTimestamp("end_time");
+                if (startTs != null) exam.setStartTime(startTs.toString().substring(0, 16).replace(" ", "T"));
+                if (endTs != null) exam.setEndTime(endTs.toString().substring(0, 16).replace(" ", "T"));
+
+                list.add(exam);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

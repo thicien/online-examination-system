@@ -35,4 +35,9 @@ public class Exam {
     public void setEndTime(String endTime) { this.endTime = endTime; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    // New field for Exam Activation
+    private boolean isActive;
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
 }

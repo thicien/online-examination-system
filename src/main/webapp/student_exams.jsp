@@ -12,7 +12,7 @@
     }
 
     ExamDao examDao = new ExamDao();
-    List<Exam> exams = examDao.getAllExams();
+    List<Exam> exams = examDao.getAllActiveExams();
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 %>

@@ -52,6 +52,11 @@
                             <td>
                                 <a href="add_question.jsp?examId=<%= e.getId() %>" class="btn-sm btn-view">Add Questions</a>
                                 <a href="edit_exam.jsp?id=<%= e.getId() %>" class="btn-sm btn-edit">Edit</a>
+                                <% if (e.isActive()) { %>
+                                    <a href="admin?action=deactivateExam&id=<%= e.getId() %>" class="btn-sm btn-delete" style="background-color: #ff9800;">Deactivate</a>
+                                <% } else { %>
+                                    <a href="admin?action=activateExam&id=<%= e.getId() %>" class="btn-sm btn-view" style="background-color: #4caf50;">Activate</a>
+                                <% } %>
                                 <a href="admin?action=deleteExam&id=<%= e.getId() %>" class="btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this exam? This action cannot be undone.')">Delete</a>
                             </td>
                         </tr>

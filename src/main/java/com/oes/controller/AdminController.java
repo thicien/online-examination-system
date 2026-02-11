@@ -38,6 +38,10 @@ public class AdminController extends HttpServlet {
         
          if ("deleteExam".equals(action)) {
             deleteExam(request, response);
+        } else if ("activateExam".equals(action)) {
+            activateExam(request, response);
+        } else if ("deactivateExam".equals(action)) {
+            deactivateExam(request, response);
         }
     }
 
@@ -163,5 +167,17 @@ public class AdminController extends HttpServlet {
                  response.sendRedirect("admin_dashboard.jsp?err=UpdateException");
             }
         }
+    }
+
+    private void activateExam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        examDao.activateExam(id);
+        response.sendRedirect("admin_exams.jsp?msg=Exam Activated");
+    }
+
+    private void deactivateExam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        examDao.deactivateExam(id);
+        response.sendRedirect("admin_exams.jsp?msg=Exam Deactivated");
     }
 }
